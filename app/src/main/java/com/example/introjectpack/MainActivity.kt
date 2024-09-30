@@ -69,6 +69,7 @@ class MainActivity : ComponentActivity() {
     private fun Circle() {
         var count by remember {
             mutableIntStateOf(0)
+            // hello
         }
         Box(
             Modifier
