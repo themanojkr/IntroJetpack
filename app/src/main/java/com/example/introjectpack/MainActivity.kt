@@ -15,13 +15,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -30,10 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.MutableLiveData
 import com.example.introjectpack.ui.theme.IntroJectpackTheme
 
 class MainActivity : ComponentActivity() {
@@ -50,38 +46,40 @@ class MainActivity : ComponentActivity() {
     @Preview(showBackground = true, device = Devices.PIXEL_2_XL)
     @Composable
     fun MyApp(){
-
+        var count by remember {
+            mutableIntStateOf(0)
+            // hello
+        }
         Surface(modifier = Modifier
             .fillMaxSize()
             .padding(10.dp)) {
 
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
-                Text(text = "$ 100", fontSize = 40.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
+                Text(text = "$ $count", fontSize = 40.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
                 Spacer(modifier = Modifier.height(100.dp))
-                Circle()
+                Circle(count) {
+                    count = it
+                }
             }
 
         }
     }
 
-    @Preview
     @Composable
-    private fun Circle() {
-        var count by remember {
-            mutableIntStateOf(0)
-            // hello
-        }
+    private fun Circle(count: Int , CountMoney:(Int) ->Unit) {
+      var countMoney = count
         Box(
             Modifier
                 .width(100.dp)
                 .height(100.dp)
                 .clickable {
-                    count = count?.plus(1)!!
+                    countMoney = count?.plus(1)!!
+                    CountMoney(countMoney)
                     Log.d("Manoj", "Circle: Tab Clicked")
                 }
                 .background(Color.Green, shape = CircleShape), contentAlignment = Alignment.Center) {
 //            Text(text = "Tap",color= Color.White)
-            setText(txt = "Tap $count")
+            setText(txt = "Tap")
         }
     }
 
